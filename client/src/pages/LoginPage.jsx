@@ -12,6 +12,11 @@ const LoginPage = () => {
 
   const onSubmitHandler=(event)=>{
     event.preventDefault();
+
+    if(currState==="Sign up" && !isDateSubmitted){
+      setIsDataSubmitted(true);
+      return;
+    }
   }
 
 
@@ -24,7 +29,7 @@ const LoginPage = () => {
       <form onSubmit={onSubmitHandler} className='border-2 bg-white/8 text-white border-gray-500 p-6 flex flex-col gap-6 rounded-lg shadow-lg'>
         <h2 className='font-medium text-2xl flex justify-between items-center '>
         {currState}
-        {isDateSubmitted && <img onClick={()=>setIsDataSubmitted(fallse)} src={assets.arrow_icon} alt="" className='w-5 cursor-pointer'/>}
+        {isDateSubmitted && <img onClick={()=>setIsDataSubmitted(false)} src={assets.arrow_icon} alt="" className='w-5 cursor-pointer'/>}
         </h2>
         {currState==='Sign up' && !isDateSubmitted && (
             <input onChange={(e)=>setFullName(e.target.value)} value={fullName}
