@@ -9,11 +9,11 @@ const RightSidebar = ({selectedUser}) => {
       <div className='pt-16 flex flex-col items-center gap-2 text-xs font-light mx-auto'>
         <img src={selectedUser?.profilePic || assets.avatar_icon} alt="" 
         className='w-20 aspect-[1/1] rounded-full'/>
-        <h1 className='px-10 text-lg font-medium mx-auto flex items-center gap-2'>
+        <h1 className='px-10 text-md font-medium mx-auto flex items-center gap-2'>
           <p className='p-1 w-2 rounded-full bg-green-500'></p>
           {selectedUser.fullName}
         </h1>
-        <p className='px-10 mx-auto'>{selectedUser.bio}</p>
+        <p className='text-xs px-12 mx-auto'>{selectedUser.bio}</p>
       </div>
 
       <hr className='border-[#ffffff50] my-4' />
