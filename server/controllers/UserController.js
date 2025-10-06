@@ -1,6 +1,7 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/UserModel.js";
 import bcrypt from 'bcrypt'
+import cloudinary from "../lib/cloudinary.js";
 
 //function for signup a user
 export const Signup = async (req, res) => {
@@ -42,7 +43,7 @@ export const Login = async (req, res) => {
         }
 
         const token = generateToken(userData._id);
-        res.json({ success: true, userData: newUser, token, message: "Login successfully" })
+        res.json({ success: true, userData, token, message: "Login successfully" })
 
     } catch (error) {
         console.log(error);

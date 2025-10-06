@@ -31,7 +31,7 @@ export const AuthProvider = ({children})=>{
     //login function to handle user authentication and socket connection 
     const login = async (state,credentials)=>{
         try {
-            const {data} = await axios.post(`/api/auth/${state}`,credentials);
+            const {data} = await axios.post(`/api/auth/${state}`,credentials); 
             if(data.success){
                 setAuthUser(data.userData)
                 connectSocket(data.userData)
@@ -65,7 +65,7 @@ export const AuthProvider = ({children})=>{
     const updateProfile =async (body)=>{
         try {
             const {data}= await axios.put('/api/auth/update-profile',body)
-            if (data.success) {
+            if (data.success) { 
                 setAuthUser(data.user)
                 toast.success("Profile updated successfully")
             }
