@@ -40,7 +40,7 @@ io.on("connection",(socket)=>{
 
 //Middleware
 app.use(express.json({limit: "4mb"}));
-app.use(cors());//it allow all the url to connect with backend
+app.use(cors());          //it allow all the url to connect with backend
 
 //Routes setup
 app.use("/api/status",(req,res)=>res.send("Server is live"));
