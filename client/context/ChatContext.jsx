@@ -43,7 +43,7 @@ export const ChatProvider = ({ children }) => {
         try {
             const { data } = await axios.post(`/api/messages/send/${selectedUser._id}`, messageData)
             if (data.success) {
-                setMessages((preMessages) => [...prevMessages, data.newMessage])
+                setMessages((prevMessages) => [...prevMessages, data.newMessage])
             } else {
                 toast.error(data.message)
             }
@@ -59,7 +59,7 @@ export const ChatProvider = ({ children }) => {
         socket.on("newMessages", (newMessage) => {
             if (selectedUser && newMessage.senderId === selectedUser._id) {
                 newMessage.seen = true;
-                setMessages((prevMessages) => [...prevMessage, newMessage])
+                setMessages((prevMessages) => [...prevMessages, newMessage])
                 axios.put(`/api/messages/mark/${newMessage._id}`)
             } else {
                 setUnseenMessages((prevUnseenMessages) => ({
@@ -86,7 +86,7 @@ export const ChatProvider = ({ children }) => {
         users,
         selectedUser,
         getUsers,
-        setMessages,
+        getMessages,
         sendMessage,
         setSelectedUser,
         unseenMessages,

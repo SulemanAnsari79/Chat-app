@@ -77,6 +77,10 @@ export const AuthProvider = ({children})=>{
     //connect socket function to handle socket connection and online userupdates
     const connectSocket= (userData)=>{
         if (!userData || socket?.connected) return;
+
+        // Agar existing socket already connected hai to reuse karo
+        if (socket && socket.connected) return;
+
         const newSocket= io(backendUrl,{
             query:{
                 userId:userData._id,

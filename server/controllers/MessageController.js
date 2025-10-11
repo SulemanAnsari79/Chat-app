@@ -9,15 +9,29 @@ export const getUsersForSidebar = async (req, res) => {
         const userId = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: userId }  }).select("-password");
 
-        //count number of messages not seen or unseen
+        // //count number of messages not seen or unseen
+        // const unseenMessages = {};
+        // const promises = filteredUsers.map(async (user) => {
+        //     const messages = await Message.find({ senderId: user._id, receiverId: userId, seen: false })
+        //     if (messages.length > 0) {
+        //         unseenMessages[user._id] = messages;
+        //     }
+        // })
+        // await Promise.all(promises);
+
+
         const unseenMessages = {};
         const promises = filteredUsers.map(async (user) => {
-            const messages = await Message.find({ senderId: user._id, receiverId: userId, seen: false })
-            if (messages.length > 0) {
-                unseenMessages[user._id] = messages;
-            }
-        })
+          const count = await Message.countDocuments({
+            senderId: user._id,
+            receiverId: userId,
+            seen: false
+          });
+          unseenMessages[user._id] = count; // 👈 store number instead of array
+        });
         await Promise.all(promises);
+
+
         res.json({ success: true, users: filteredUsers, unseenMessages })
     } catch (error) {
         console.log(error.message);
@@ -37,7 +51,7 @@ export const getMessages = async (req, res) => {
                 { senderId: selectedUserId, receiverId: myId },
             ]
         })
-        await Message.updateMany({ senderId: selectedUserId, receiverId: myid }, { seen: true });
+        await Message.updateMany({ senderId: selectedUserId, receiverId: myId }, { seen: true });
         res.json({ success: true, messages })
 
     } catch (error) {
@@ -59,7 +73,6 @@ export const markMessageAsSeen = async (req, res) => {
 }
 
 //send message to selected user
-
 export const sendMessage = async (req, res) => {
     try {
         const { text, image } = req.body;
@@ -78,14 +91,13 @@ export const sendMessage = async (req, res) => {
             image: imageUrl
         })
 
-
         //emit the new message to the receiver's socket
         const receiverSocketId = userSocketMap[receiverId]
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", newMessage)
         }
-
         res.json({ success: true, newMessage })
+
     } catch (error) {
         console.log(error.message);
         res.json({ success: false, message: error.message })
